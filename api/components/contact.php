@@ -2,12 +2,19 @@
 /**
  * MonteroStudio - Secure Contact Form Component
  */
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-// Generate dynamic CSRF token if not set
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+// Generate dynamic CSRF token in cookie if not set
+$isSecure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+if (empty($_COOKIE['public_csrf_token'])) {
+    $publicCsrfToken = bin2hex(random_bytes(32));
+    setcookie('public_csrf_token', $publicCsrfToken, [
+        'expires'  => time() + 7200,
+        'path'     => '/',
+        'secure'   => $isSecure,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+} else {
+    $publicCsrfToken = $_COOKIE['public_csrf_token'];
 }
 ?>
 <section id="contact" class="spa-section py-12 scroll-animate relative">
@@ -79,7 +86,7 @@ if (empty($_SESSION['csrf_token'])) {
                 <form id="contact-form" action="index.php" method="POST" class="glass-panel p-8 border-slate-800/40 bg-slate-950/20 space-y-6">
                     
                     <!-- CSRF Validation Token Token -->
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($publicCsrfToken, ENT_QUOTES, 'UTF-8'); ?>">
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <!-- Input Name -->

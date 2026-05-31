@@ -4,14 +4,19 @@
  * Implements strict input sanitization, token checks, and SPA dynamic templating.
  */
 
-// Start session if not already initialized
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Generate a secure CSRF token if it does not exist
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+// Initialize CSRF Token (Double Submit Cookie Pattern)
+$isSecure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+if (empty($_COOKIE['public_csrf_token'])) {
+    $publicCsrfToken = bin2hex(random_bytes(32));
+    setcookie('public_csrf_token', $publicCsrfToken, [
+        'expires'  => time() + 7200, // 2 hours
+        'path'     => '/',
+        'secure'   => $isSecure,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+} else {
+    $publicCsrfToken = $_COOKIE['public_csrf_token'];
 }
 
 // Handle Form POST requests (AJAX Form Controller)
@@ -25,9 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = trim($_POST['subject'] ?? 'General');
     $message = trim($_POST['message'] ?? '');
     $csrf_token = $_POST['csrf_token'] ?? '';
+    $cookie_csrf_token = $_COOKIE['public_csrf_token'] ?? '';
 
-    // 1. Validate CSRF Token (hash_equals to prevent timing attacks)
-    if (empty($csrf_token) || empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $csrf_token)) {
+    // 1. Validate CSRF Token using Double Submit Cookie
+    if (empty($csrf_token) || empty($cookie_csrf_token) || !hash_equals($cookie_csrf_token, $csrf_token)) {
         echo json_encode([
             'success' => false,
             'message' => 'Error de seguridad: Token de validación inválido o expirado. Por favor, recarga la página.'
@@ -64,7 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 5. Success Flow
     // Regenerate CSRF token after successful submission (prevent token reuse)
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    $newCsrf = bin2hex(random_bytes(32));
+    setcookie('public_csrf_token', $newCsrf, [
+        'expires'  => time() + 7200,
+        'path'     => '/',
+        'secure'   => $isSecure,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
 
     // Optional: Log message details locally for mock/review in workspace
     // Ensure the folder exists if writing to file (TODO: production should connect to database or send SMTP mail)
@@ -72,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode([
         'success' => true,
         'message' => '¡Tu mensaje ha sido recibido con éxito! En MONTERO STUDIO me pondré en contacto contigo a la brevedad.',
-        'new_csrf' => $_SESSION['csrf_token']
+        'new_csrf' => $newCsrf
     ]);
     exit;
 }

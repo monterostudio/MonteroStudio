@@ -275,7 +275,7 @@ $projects = DB::getProjects();
                 <span class="text-[9px] tracking-widest text-slate-400 font-semibold uppercase leading-none mt-1">Panel Administrativo</span>
             </div>
             <div class="flex items-center space-x-6">
-                <span class="text-xs text-slate-400 hidden sm:inline"><i class="bx bx-user align-middle mr-1 text-sm text-blue-500"></i> Hola, <strong><?php echo htmlspecialchars($_SESSION['admin_user'], ENT_QUOTES, 'UTF-8'); ?></strong></span>
+                <span class="text-xs text-slate-400 hidden sm:inline"><i class="bx bx-user align-middle mr-1 text-sm text-blue-500"></i> Hola, <strong><?php echo htmlspecialchars(get_admin_user(), ENT_QUOTES, 'UTF-8'); ?></strong></span>
                 <a href="../#home" target="_blank" class="text-xs text-slate-300 hover:text-white transition-colors"><i class="bx bx-globe align-middle mr-0.5"></i> Ver Sitio</a>
                 <a href="logout.php" class="px-4 py-2 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-800/40 rounded-lg text-xs font-bold uppercase tracking-wider transition-all"><i class="bx bx-log-out align-middle mr-1"></i> Salir</a>
             </div>

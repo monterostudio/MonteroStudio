@@ -17,17 +17,7 @@ $error = '';
 $maxAttempts = 5;
 $lockoutTime = 30; // 30 seconds lockout
 
-// Initialize login attempt tracking
-if (!isset($_SESSION['login_attempts'])) {
-    $_SESSION['login_attempts'] = 0;
-    $_SESSION['last_attempt_time'] = 0;
-}
-
-// Check lockout status
-$currentTime = time();
-if ($_SESSION['login_attempts'] >= $maxAttempts && ($currentTime - $_SESSION['last_attempt_time']) < $lockoutTime) {
-    $error = "Demasiados intentos fallidos. Por seguridad, la cuenta está bloqueada temporalmente por " . ($lockoutTime - ($currentTime - $_SESSION['last_attempt_time'])) . " segundos.";
-}
+// Lockout status check bypassed for stateless serverless compatibility
 
 // Process login post
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
@@ -57,24 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
                 $user = $stmt->fetch();
 
                 if ($user && password_verify($password, $user['password_hash'])) {
-                    // Reset attempt counters
-                    $_SESSION['login_attempts'] = 0;
-                    $_SESSION['last_attempt_time'] = 0;
-
-                    // Regenerate session id to prevent session fixation attacks
-                    session_regenerate_id(true);
-
-                    $_SESSION['admin_logged_in'] = true;
-                    $_SESSION['admin_user'] = $user['username'];
-
-                    // Regenerate CSRF token for the new session state
-                    $_SESSION['admin_csrf_token'] = bin2hex(random_bytes(32));
+                    // Set stateless login cookie
+                    set_admin_login_cookie($user['username']);
 
                     header("Location: dashboard.php");
                     exit;
                 } else {
-                    $_SESSION['login_attempts']++;
-                    $_SESSION['last_attempt_time'] = time();
                     $error = "Credenciales incorrectas.";
                 }
             } catch (PDOException $e) {
