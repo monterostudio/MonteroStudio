@@ -355,7 +355,7 @@
                     form.reset();
                     // Update CSRF token in form if sent in response
                     if (data.new_csrf) {
-                        const csrfInput = form.querySelector('input[name="csrf_token"]');
+                        const csrfInput = form.querySelector('input[name="public_csrf_token"]');
                         if (csrfInput) csrfInput.value = data.new_csrf;
                     }
                 } else {

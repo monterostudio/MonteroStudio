@@ -90,7 +90,7 @@ if (!isset($publicCsrfToken)) {
                 <form id="contact-form" action="index.php" method="POST" class="glass-panel p-8 border-slate-800/40 bg-slate-950/20 space-y-6">
                     
                     <!-- CSRF Validation Token Token -->
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($publicCsrfToken, ENT_QUOTES, 'UTF-8'); ?>">
+                    <input type="hidden" name="public_csrf_token" value="<?php echo htmlspecialchars($publicCsrfToken, ENT_QUOTES, 'UTF-8'); ?>" autocomplete="off">
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <!-- Input Name -->

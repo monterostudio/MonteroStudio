@@ -29,17 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $subject = trim($_POST['subject'] ?? 'General');
     $message = trim($_POST['message'] ?? '');
-    $csrf_token = $_POST['csrf_token'] ?? '';
+    $csrf_token = $_POST['public_csrf_token'] ?? '';
     $cookie_csrf_token = $_COOKIE['public_csrf_token'] ?? '';
 
     // 1. Validate CSRF Token using Double Submit Cookie
     if (empty($csrf_token) || empty($cookie_csrf_token) || !hash_equals($cookie_csrf_token, $csrf_token)) {
         echo json_encode([
             'success' => false,
-            'message' => 'Error de seguridad: Token de validación inválido o expirado. Por favor, recarga la página.',
-            'debug_post_csrf' => $csrf_token,
-            'debug_cookie_csrf' => $cookie_csrf_token,
-            'debug_all_cookies' => $_COOKIE
+            'message' => 'Error de seguridad: Token de validación inválido o expirado. Por favor, recarga la página.'
         ]);
         exit;
     }
