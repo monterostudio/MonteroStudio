@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $subject = trim($_POST['subject'] ?? 'General');
     $message = trim($_POST['message'] ?? '');
-    $csrf_token = $_POST['public_csrf_token'] ?? '';
+    $csrf_token = $_POST['public_csrf_token'] ?? $_POST['csrf_token'] ?? '';
     $cookie_csrf_token = $_COOKIE['public_csrf_token'] ?? '';
 
     // 1. Validate CSRF Token using Double Submit Cookie
@@ -100,6 +100,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Handle Page GET requests (SPA Renderer)
+// Prevent browser caching of the HTML page
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 // Load structural HTML parts and components in order
 include_once __DIR__ . '/includes/header.php';
 
