@@ -36,7 +36,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($csrf_token) || empty($cookie_csrf_token) || !hash_equals($cookie_csrf_token, $csrf_token)) {
         echo json_encode([
             'success' => false,
-            'message' => 'Error de seguridad: Token de validación inválido o expirado. Por favor, recarga la página.'
+            'message' => 'Error de seguridad: Token de validación inválido o expirado. Por favor, recarga la página.',
+            'debug_post_csrf' => $csrf_token,
+            'debug_cookie_csrf' => $cookie_csrf_token,
+            'debug_all_cookies' => $_COOKIE,
+            'debug_is_secure' => $isSecure ?? null,
+            'debug_server_https' => $_SERVER['HTTPS'] ?? null,
+            'debug_server' => [
+                'HTTP_X_FORWARDED_PROTO' => $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? null,
+                'REQUEST_SCHEME' => $_SERVER['REQUEST_SCHEME'] ?? null
+            ]
         ]);
         exit;
     }

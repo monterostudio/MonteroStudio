@@ -359,7 +359,8 @@
                         if (csrfInput) csrfInput.value = data.new_csrf;
                     }
                 } else {
-                    showCustomModal('Error de Envío', data.message || 'Verifica los campos e intenta de nuevo.', 'error');
+                    console.log("Full Server Response:", data);
+                    showCustomModal('Error de Envío', JSON.stringify(data), 'error');
                 }
             })
             .catch(error => {
