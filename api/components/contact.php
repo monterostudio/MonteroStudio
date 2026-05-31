@@ -51,17 +51,25 @@ if (!isset($publicCsrfToken)) {
                         <div class="text-blue-500 text-xl mt-0.5"><i class="bx bx-map"></i></div>
                         <div>
                             <h4 class="font-semibold text-white">Ubicación</h4>
-                            <p class="text-slate-400 text-xs">Mérida, Venezuela (Disponible Remoto)</p>
+                            <p class="text-slate-400 text-xs"><?php echo htmlspecialchars(DB::getSetting('contact_location', 'Mérida, Venezuela (Disponible Remoto)'), ENT_QUOTES, 'UTF-8'); ?></p>
                         </div>
                     </div>
 
-                    <!-- Email Info (Obfuscated using HTML entities and formatting to prevent scraper bots) -->
+                    <!-- Email Info (Obfuscated dynamically to prevent crawler bots) -->
                     <div class="flex items-start space-x-3 text-sm">
                         <div class="text-blue-500 text-xl mt-0.5"><i class="bx bx-envelope"></i></div>
                         <div>
                             <h4 class="font-semibold text-white">Correo Electrónico</h4>
-                            <!-- Obfuscated structure for crawler bots safety -->
-                            <p class="text-slate-400 text-xs">contacto [arroba] monterostudio.com</p>
+                            <p class="text-slate-400 text-xs"><?php echo htmlspecialchars(str_replace('@', ' [arroba] ', DB::getSetting('contact_email', 'contacto@monterostudio.com')), ENT_QUOTES, 'UTF-8'); ?></p>
+                        </div>
+                    </div>
+
+                    <!-- Phone Info -->
+                    <div class="flex items-start space-x-3 text-sm">
+                        <div class="text-blue-500 text-xl mt-0.5"><i class="bx bx-phone"></i></div>
+                        <div>
+                            <h4 class="font-semibold text-white">Teléfono de Contacto</h4>
+                            <p class="text-slate-400 text-xs"><?php echo htmlspecialchars(DB::getSetting('contact_phone', '+58 412 1234567'), ENT_QUOTES, 'UTF-8'); ?></p>
                         </div>
                     </div>
 
@@ -70,7 +78,7 @@ if (!isset($publicCsrfToken)) {
                         <div class="text-blue-500 text-xl mt-0.5"><i class="bx bx-time-five"></i></div>
                         <div>
                             <h4 class="font-semibold text-white">Horario de Atención</h4>
-                            <p class="text-slate-400 text-xs">Lunes a Viernes (8:00 AM - 6:00 PM)</p>
+                            <p class="text-slate-400 text-xs"><?php echo htmlspecialchars(DB::getSetting('contact_hours', 'Lunes a Viernes (8:00 AM - 6:00 PM)'), ENT_QUOTES, 'UTF-8'); ?></p>
                         </div>
                     </div>
                 </div>

@@ -48,6 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'stat_commit_val' => $_POST['stat_commit_val'] ?? '',
                 'stat_commit_lbl' => $_POST['stat_commit_lbl'] ?? '',
                 'footer_description' => $_POST['footer_description'] ?? '',
+                'contact_email' => $_POST['contact_email'] ?? '',
+                'contact_phone' => $_POST['contact_phone'] ?? '',
+                'contact_location' => $_POST['contact_location'] ?? '',
+                'contact_hours' => $_POST['contact_hours'] ?? '',
+                'social_linkedin' => $_POST['social_linkedin'] ?? '',
+                'social_github' => $_POST['social_github'] ?? '',
+                'social_instagram' => $_POST['social_instagram'] ?? '',
+                'social_dribbble' => $_POST['social_dribbble'] ?? '',
             ];
 
             try {
@@ -220,6 +228,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "No se pudo eliminar el proyecto.";
             }
         }
+
+        // ACTION: Update Admin Account (Username & Password)
+        elseif ($action === 'update_account') {
+            $new_username = trim($_POST['username'] ?? '');
+            $new_password = $_POST['password'] ?? '';
+            $confirm_password = $_POST['confirm_password'] ?? '';
+
+            if (empty($new_username)) {
+                $error = "El nombre de usuario no puede estar vacío.";
+            } elseif (!empty($new_password) && $new_password !== $confirm_password) {
+                $error = "Las contraseñas no coinciden.";
+            } else {
+                try {
+                    $current_user = get_admin_user();
+                    if (!empty($new_password)) {
+                        $pass_hash = password_hash($new_password, PASSWORD_DEFAULT);
+                        $stmt = $db->prepare("UPDATE admins SET username = ?, password_hash = ? WHERE username = ?");
+                        $stmt->execute([$new_username, $pass_hash, $current_user]);
+                    } else {
+                        $stmt = $db->prepare("UPDATE admins SET username = ? WHERE username = ?");
+                        $stmt->execute([$new_username, $current_user]);
+                    }
+
+                    set_admin_login_cookie($new_username);
+                    $success = "Credenciales de cuenta actualizadas correctamente.";
+                } catch (PDOException $e) {
+                    error_log("Account update failed: " . $e->getMessage());
+                    $error = "No se pudieron actualizar los datos de la cuenta.";
+                }
+            }
+        }
     }
 }
 
@@ -326,6 +365,11 @@ $projects = DB::getProjects();
                     <button onclick="switchTab('tab-portfolio', this)" class="tab-btn w-full px-4 py-3 rounded-lg text-xs font-bold text-left uppercase tracking-wider hover:bg-slate-900 text-slate-400 hover:text-white border border-transparent transition-all flex items-center space-x-2">
                         <i class="bx bx-images text-base"></i>
                         <span>Portafolio</span>
+                    </button>
+
+                    <button onclick="switchTab('tab-security', this)" class="tab-btn w-full px-4 py-3 rounded-lg text-xs font-bold text-left uppercase tracking-wider hover:bg-slate-900 text-slate-400 hover:text-white border border-transparent transition-all flex items-center space-x-2">
+                        <i class="bx bx-lock-alt text-base"></i>
+                        <span>Seguridad</span>
                     </button>
                 </div>
             </div>
@@ -455,6 +499,64 @@ $projects = DB::getProjects();
                                 <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Descripción Pie de Página</label>
                                 <textarea name="footer_description" rows="2"
                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2.5 px-3 text-xs text-white focus:outline-none focus:border-blue-500 resize-none"><?php echo htmlspecialchars($settings['footer_description'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Contact Info Group -->
+                        <div class="space-y-4 pt-4 border-t border-slate-900">
+                            <h3 class="text-xs font-bold text-blue-400 uppercase tracking-wider border-l-2 border-blue-500 pl-2">Información de Contacto</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Correo Electrónico de Contacto</label>
+                                    <input type="email" name="contact_email" value="<?php echo htmlspecialchars($settings['contact_email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2 px-3 text-xs text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Teléfono de Contacto</label>
+                                    <input type="text" name="contact_phone" value="<?php echo htmlspecialchars($settings['contact_phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2 px-3 text-xs text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Ubicación / País</label>
+                                    <input type="text" name="contact_location" value="<?php echo htmlspecialchars($settings['contact_location'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2 px-3 text-xs text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Horario de Atención</label>
+                                    <input type="text" name="contact_hours" value="<?php echo htmlspecialchars($settings['contact_hours'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2 px-3 text-xs text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Info Group -->
+                        <div class="space-y-4 pt-4 border-t border-slate-900">
+                            <h3 class="text-xs font-bold text-blue-400 uppercase tracking-wider border-l-2 border-blue-500 pl-2">Enlaces a Redes Sociales</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">LinkedIn URL</label>
+                                    <input type="text" name="social_linkedin" value="<?php echo htmlspecialchars($settings['social_linkedin'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2 px-3 text-xs text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">GitHub URL</label>
+                                    <input type="text" name="social_github" value="<?php echo htmlspecialchars($settings['social_github'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2 px-3 text-xs text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Instagram URL</label>
+                                    <input type="text" name="social_instagram" value="<?php echo htmlspecialchars($settings['social_instagram'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2 px-3 text-xs text-white focus:outline-none focus:border-blue-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Dribbble / Behance URL</label>
+                                    <input type="text" name="social_dribbble" value="<?php echo htmlspecialchars($settings['social_dribbble'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                           class="w-full bg-slate-950/40 border border-slate-800 rounded-lg py-2 px-3 text-xs text-white focus:outline-none focus:border-blue-500">
+                                </div>
                             </div>
                         </div>
 
@@ -712,6 +814,61 @@ $projects = DB::getProjects();
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
+                </div>
+
+                <!-- MODULE 4: Admin Account Security -->
+                <div id="tab-security" class="tab-content glass-panel p-6 sm:p-8 space-y-6">
+                    <div class="border-b border-slate-900 pb-4">
+                        <h2 class="text-xl font-bold text-white uppercase tracking-wider">Seguridad de la Cuenta</h2>
+                        <p class="text-xs text-slate-400 mt-1">Cambia tu nombre de usuario y tu contraseña de acceso administrativo.</p>
+                    </div>
+
+                    <form method="POST" action="dashboard.php" class="space-y-5 max-w-lg">
+                        <input type="hidden" name="action" value="update_account">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(get_admin_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+
+                        <!-- Username input -->
+                        <div class="space-y-2">
+                            <label for="username" class="block text-xs font-bold uppercase tracking-wider text-slate-400">Usuario Administrador</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">
+                                    <i class="bx bx-user"></i>
+                                </span>
+                                <input type="text" id="username" name="username" required value="<?php echo htmlspecialchars(get_admin_user(), ENT_QUOTES, 'UTF-8'); ?>"
+                                       class="w-full bg-slate-950/50 border border-slate-800 rounded-lg py-2.5 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-blue-500 transition-all">
+                            </div>
+                        </div>
+
+                        <!-- New password input -->
+                        <div class="space-y-2">
+                            <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-400">Nueva Contraseña (dejar en blanco para no cambiar)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">
+                                    <i class="bx bx-lock-alt"></i>
+                                </span>
+                                <input type="password" id="password" name="password" placeholder="Ingresa nueva contraseña"
+                                       class="w-full bg-slate-950/50 border border-slate-800 rounded-lg py-2.5 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-blue-500 transition-all">
+                            </div>
+                        </div>
+
+                        <!-- Confirm password input -->
+                        <div class="space-y-2">
+                            <label for="confirm_password" class="block text-xs font-bold uppercase tracking-wider text-slate-400">Confirmar Nueva Contraseña</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">
+                                    <i class="bx bx-lock-alt"></i>
+                                </span>
+                                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirma nueva contraseña"
+                                       class="w-full bg-slate-950/50 border border-slate-800 rounded-lg py-2.5 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-blue-500 transition-all">
+                            </div>
+                        </div>
+
+                        <div class="pt-4 flex justify-end">
+                            <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs uppercase tracking-wider transition-all shadow-lg shadow-blue-600/20 active:scale-95 cursor-pointer">
+                                Actualizar Cuenta
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
             </div>

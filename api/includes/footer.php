@@ -20,16 +20,16 @@
                         </p>
                         <!-- Social networks buttons -->
                         <div class="flex items-center space-x-4 pt-2">
-                            <a href="#" target="_blank" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-blue-600 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="LinkedIn">
+                            <a href="<?php echo htmlspecialchars(DB::getSetting('social_linkedin', '#'), ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-blue-600 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="LinkedIn">
                                 <i class="bx bxl-linkedin text-lg"></i>
                             </a>
-                            <a href="#" target="_blank" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-blue-600 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="Behance/Dribbble">
+                            <a href="<?php echo htmlspecialchars(DB::getSetting('social_dribbble', '#'), ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-blue-600 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="Behance/Dribbble">
                                 <i class="bx bxl-dribbble text-lg"></i>
                             </a>
-                            <a href="#" target="_blank" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-blue-600 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="Github">
+                            <a href="<?php echo htmlspecialchars(DB::getSetting('social_github', '#'), ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-blue-600 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="Github">
                                 <i class="bx bxl-github text-lg"></i>
                             </a>
-                            <a href="#" target="_blank" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-blue-600 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="Instagram">
+                            <a href="<?php echo htmlspecialchars(DB::getSetting('social_instagram', '#'), ENT_QUOTES, 'UTF-8'); ?>" target="_blank" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-blue-600 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300" aria-label="Instagram">
                                 <i class="bx bxl-instagram text-lg"></i>
                             </a>
                         </div>
