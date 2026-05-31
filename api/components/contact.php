@@ -2,19 +2,23 @@
 /**
  * MonteroStudio - Secure Contact Form Component
  */
-// Generate dynamic CSRF token in cookie if not set
-$isSecure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
-if (empty($_COOKIE['public_csrf_token'])) {
-    $publicCsrfToken = bin2hex(random_bytes(32));
-    setcookie('public_csrf_token', $publicCsrfToken, [
-        'expires'  => time() + 7200,
-        'path'     => '/',
-        'secure'   => $isSecure,
-        'httponly' => true,
-        'samesite' => 'Lax'
-    ]);
-} else {
-    $publicCsrfToken = $_COOKIE['public_csrf_token'];
+// Use the CSRF token generated in index.php if available, otherwise generate/retrieve it
+if (!isset($publicCsrfToken)) {
+    $isSecure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+    if (empty($_COOKIE['public_csrf_token'])) {
+        $publicCsrfToken = bin2hex(random_bytes(32));
+        if (!headers_sent()) {
+            setcookie('public_csrf_token', $publicCsrfToken, [
+                'expires'  => time() + 7200,
+                'path'     => '/',
+                'secure'   => $isSecure,
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+        }
+    } else {
+        $publicCsrfToken = $_COOKIE['public_csrf_token'];
+    }
 }
 ?>
 <section id="contact" class="spa-section py-12 scroll-animate relative">

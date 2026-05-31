@@ -14,13 +14,15 @@ function get_app_secret() {
 $isSecure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
 if (empty($_COOKIE['csrf_token'])) {
     $csrfToken = bin2hex(random_bytes(32));
-    setcookie('csrf_token', $csrfToken, [
-        'expires'  => time() + 7200, // 2 hours
-        'path'     => '/',
-        'secure'   => $isSecure,
-        'httponly' => true,
-        'samesite' => 'Lax'
-    ]);
+    if (!headers_sent()) {
+        setcookie('csrf_token', $csrfToken, [
+            'expires'  => time() + 7200, // 2 hours
+            'path'     => '/',
+            'secure'   => $isSecure,
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+    }
 } else {
     $csrfToken = $_COOKIE['csrf_token'];
 }
