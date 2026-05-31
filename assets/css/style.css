@@ -138,7 +138,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* SPA Section Transitions */
 .spa-section {
-    display: none;
+    display: none !important;
     opacity: 0;
     transform: translateY(15px);
     transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
@@ -146,9 +146,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .spa-section.active {
-    display: block;
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Ensure display overrides when active */
+#home.active {
+    display: flex !important;
+}
+#about.active,
+#services.active,
+#portfolio.active,
+#cinema.active,
+#contact.active {
+    display: block !important;
 }
 
 /* CINEMA MODE IMPLEMENTATION */

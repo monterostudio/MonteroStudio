@@ -38,102 +38,11 @@
             $dbProjects = DB::getProjects();
             if (empty($dbProjects)):
             ?>
-                <!-- Project 1: AeroBranding (Design) -->
-                <div class="portfolio-item glass-panel overflow-hidden border-slate-900/80 bg-slate-950/20 group relative" data-category="design">
-                    <!-- Data Source for Cinema Mode JS -->
-                    <div class="cinema-data-source hidden" 
-                         data-title="AeroBranding"
-                         data-subtitle="Identidad Corporativa"
-                         data-description="Branding ecológico premium diseñado para una aerolínea de movilidad sostenible. Cree una paleta de colores limpia inspirada en el aire libre, logotipo vectorial geométrico, papelería institucional y guías de estilos tipográficos modernos."
-                         data-tags="Branding, Logotipos, Manual de Marca, Vector"
-                         data-image="assets/images/aerobranding.png"
-                         data-link="#"></div>
-                    
-                    <div class="relative aspect-video overflow-hidden">
-                        <img src="assets/images/aerobranding.png" alt="AeroBranding Mockup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <!-- Hover Cinema Play Icon -->
-                        <button class="open-cinema-btn absolute inset-0 bg-slate-950/85 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white transition-all duration-300 cursor-pointer" data-project-index="0">
-                            <i class="bx bx-play-circle text-5xl text-blue-500 mb-2 animate-pulse"></i>
-                            <span class="text-xs font-bold uppercase tracking-wider">Ver Caso en Cine</span>
-                        </button>
-                    </div>
-                    <div class="p-6 border-t border-slate-900/40">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Diseño Visual / Branding</span>
-                        <h3 class="text-lg font-bold text-white tracking-tight mt-1 mb-2">AeroBranding</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed font-light">Identidad corporativa ecológica y papelería digital corporativa premium.</p>
-                    </div>
-                </div>
-
-                <!-- Project 2: NovaCommerce (Web) -->
-                <div class="portfolio-item glass-panel overflow-hidden border-slate-900/80 bg-slate-950/20 group relative" data-category="web">
-                    <div class="cinema-data-source hidden" 
-                         data-title="NovaCommerce"
-                         data-subtitle="Desarrollo Web SPA"
-                         data-description="E-commerce moderno desarrollado como una Single Page Application (SPA). Cuenta con pasarela de pago simulada por AJAX, administración de stock dinámico en base de datos MySQL de Laragon y un enrutador CSS reactivo ultrarápido."
-                         data-tags="PHP, MySQL, JavaScript ES6, Tailwind CSS"
-                         data-image="assets/images/novacommerce.png"
-                         data-link="#"></div>
-                    
-                    <div class="relative aspect-video overflow-hidden">
-                        <img src="assets/images/novacommerce.png" alt="NovaCommerce Mockup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <button class="open-cinema-btn absolute inset-0 bg-slate-950/85 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white transition-all duration-300 cursor-pointer" data-project-index="1">
-                            <i class="bx bx-play-circle text-5xl text-blue-500 mb-2 animate-pulse"></i>
-                            <span class="text-xs font-bold uppercase tracking-wider">Ver Caso en Cine</span>
-                        </button>
-                    </div>
-                    <div class="p-6 border-t border-slate-900/40">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-400">Desarrollo Web / E-Commerce</span>
-                        <h3 class="text-lg font-bold text-white tracking-tight mt-1 mb-2">NovaCommerce</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed font-light">Tienda en línea responsiva e interactiva tipo SPA sin recarga de páginas.</p>
-                    </div>
-                </div>
-
-                <!-- Project 3: Valkyria Esports (Design) -->
-                <div class="portfolio-item glass-panel overflow-hidden border-slate-900/80 bg-slate-950/20 group relative" data-category="design">
-                    <div class="cinema-data-source hidden" 
-                         data-title="Valkyria Esports"
-                         data-subtitle="Diseño UI/UX & Figma"
-                         data-description="Prototipo de aplicación móvil y web para una comunidad competitiva de videojuegos. Desarrollé esquemas de flujos (wireframes), prototipos interactivos animados en Figma y logotipos deportivos dinámicos de alto nivel."
-                         data-tags="Figma, UI/UX, Logotipos, Prototipos"
-                         data-image="assets/images/valkyria.png"
-                         data-link="#"></div>
-                    
-                    <div class="relative aspect-video overflow-hidden">
-                        <img src="assets/images/valkyria.png" alt="Valkyria Mockup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <button class="open-cinema-btn absolute inset-0 bg-slate-950/85 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white transition-all duration-300 cursor-pointer" data-project-index="2">
-                            <i class="bx bx-play-circle text-5xl text-blue-500 mb-2 animate-pulse"></i>
-                            <span class="text-xs font-bold uppercase tracking-wider">Ver Caso en Cine</span>
-                        </button>
-                    </div>
-                    <div class="p-6 border-t border-slate-900/40">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-indigo-400">Diseño UI/UX / Gaming</span>
-                        <h3 class="text-lg font-bold text-white tracking-tight mt-1 mb-2">Valkyria Esports</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed font-light">Diseño de interfaz y sistema de diseño visual de marca deportiva para torneos.</p>
-                    </div>
-                </div>
-
-                <!-- Project 4: Cryptic Wallet (Web) -->
-                <div class="portfolio-item glass-panel overflow-hidden border-slate-900/80 bg-slate-950/20 group relative" data-category="web">
-                    <div class="cinema-data-source hidden" 
-                         data-title="Cryptic Wallet"
-                         data-subtitle="Web Application Dashboard"
-                         data-description="Dashboard interactivo para visualizar precios e inventarios de criptoactivos. Integra librerías de gráficos en JS, comunicación segura con APIs públicas mediante AJAX en PHP y arquitectura de componentes responsivos."
-                         data-tags="JavaScript, PHP, API REST, Charts.js"
-                         data-image="assets/images/cryptic.png"
-                         data-link="#"></div>
-                    
-                    <div class="relative aspect-video overflow-hidden">
-                        <img src="assets/images/cryptic.png" alt="Cryptic Mockup" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <button class="open-cinema-btn absolute inset-0 bg-slate-950/85 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white transition-all duration-300 cursor-pointer" data-project-index="3">
-                            <i class="bx bx-play-circle text-5xl text-blue-500 mb-2 animate-pulse"></i>
-                            <span class="text-xs font-bold uppercase tracking-wider">Ver Caso en Cine</span>
-                        </button>
-                    </div>
-                    <div class="p-6 border-t border-slate-900/40">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-400">Desarrollo Web / Dashboard</span>
-                        <h3 class="text-lg font-bold text-white tracking-tight mt-1 mb-2">Cryptic Wallet</h3>
-                        <p class="text-slate-400 text-xs leading-relaxed font-light">Panel administrativo financiero con consultas a API externas en tiempo real.</p>
-                    </div>
+                <!-- Empty state card -->
+                <div class="col-span-1 md:col-span-2 text-center py-12 glass-panel border-slate-900 bg-slate-950/20 max-w-md mx-auto w-full">
+                    <i class="bx bx-folder-open text-5xl text-blue-500 mb-3 animate-pulse"></i>
+                    <h3 class="text-base font-bold text-white uppercase tracking-wider mb-2">Proyecto no disponible</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed max-w-xs mx-auto">Por el momento no hay casos de estudio publicados en la base de datos.</p>
                 </div>
             <?php
             else:
